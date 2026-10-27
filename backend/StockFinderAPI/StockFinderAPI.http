@@ -1,0 +1,19 @@
+@StockFinderAPI_HostAddress = http://localhost:5222
+
+### Upstream Yahoo Finance chart endpoint (called by YahooFinanceClient)
+GET https://query1.finance.yahoo.com/v8/finance/chart/TSLA?range=1mo&interval=15m
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+
+###
+
+### Daily summary (B1)
+GET {{StockFinderAPI_HostAddress}}/api/stocks/TSLA/daily-summary
+Accept: application/json
+
+### Invalid symbol -> 400
+GET {{StockFinderAPI_HostAddress}}/api/stocks/TS$LA/daily-summary
+
+### Unknown symbol -> 404
+GET {{StockFinderAPI_HostAddress}}/api/stocks/ZZZZZZQ/daily-summary
+
+###
