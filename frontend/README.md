@@ -1,16 +1,32 @@
-# React + Vite
+# StockFinder Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19 + TypeScript 7 single-page app that charts one month of intraday stock activity, summarized per day, from the StockFinder .NET API (`GET /api/stocks/{symbol}/daily-summary`).
 
-Currently, two official plugins are available:
+## Run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+In dev, Vite proxies `/api` to the backend at `http://localhost:5222` (see `vite.config.ts`).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+To work without the backend, copy `.env.example` to `.env.development.local` and set `VITE_USE_MOCKS=true`. Mock data is deterministic per symbol; `ZZZZ` simulates an unknown symbol (404) and `FAIL` an upstream outage (502).
 
-## Expanding the ESLint configuration
+## Scripts
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Dev server with HMR |
+| `npm run build` | Type-check with `tsc`, then production build |
+| `npm run typecheck` | Type-check only |
+| `npm run lint` | Lint with oxlint |
+
+Linting uses oxlint rather than ESLint because typescript-eslint does not yet support TypeScript 7 (which has no JavaScript compiler API).
+
+## Structure
+
+- `src/api` – typed API client, error mapping, symbol validation, dev mocks
+- `src/hooks` – TanStack Query hooks (daily summary, popular-stock ranking, `?symbol=` URL state)
+- `src/components` – Dashboard, StockCard, SearchBox, StockDetail, StockChart (Recharts), DailyTable, shared states
+- `src/config/popularStocks.ts` – curated pool ranked by average daily volume
