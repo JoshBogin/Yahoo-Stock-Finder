@@ -1,0 +1,11 @@
+# OS
+.DS_Store
+
+# .NET build output (backend)
+bin/
+obj/
+*.user
+
+# Node (frontend) - frontend/.gitignore covers the rest
+node_modules/
+dist/
