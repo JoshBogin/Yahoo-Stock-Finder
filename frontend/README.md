@@ -27,6 +27,5 @@ Linting uses oxlint rather than ESLint because typescript-eslint does not yet su
 ## Structure
 
 - `src/api` – typed API client, error mapping, symbol validation, dev mocks
-- `src/hooks` – TanStack Query hooks (daily summary, popular-stock ranking, `?symbol=` URL state)
+- `src/hooks` – TanStack Query hooks (daily summary, popular symbols from the API, `?symbol=` URL state)
 - `src/components` – Dashboard, StockCard, SearchBox, StockDetail, StockChart (Recharts), DailyTable, shared states
-- `src/config/popularStocks.ts` – curated pool ranked by average daily volume

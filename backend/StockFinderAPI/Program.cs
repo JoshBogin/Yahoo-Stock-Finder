@@ -19,6 +19,11 @@ builder.Services.AddExceptionHandler<UpstreamExceptionHandler>();
 
 builder.Services.AddYahooFinanceClient();
 
+builder.Services.AddOptions<PopularStocksOptions>()
+    .BindConfiguration(PopularStocksOptions.SectionName)
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
 var app = builder.Build();
 
 app.UseExceptionHandler();

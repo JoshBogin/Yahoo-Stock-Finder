@@ -1,6 +1,7 @@
 import { ApiError, type DailySummary } from './types'
 
 const MOCK_LATENCY_MS = 400
+const MOCK_POPULAR_SYMBOLS = ['NVDA', 'TSLA', 'AAPL', 'AMZN', 'MSFT', 'META']
 const TRADING_DAYS = 21
 
 // Small deterministic PRNG so each symbol always renders the same mock series.
@@ -55,4 +56,10 @@ export async function getMockDailySummary(symbol: string, signal?: AbortSignal):
       volume: Math.round(baseVolume * (0.6 + random() * 0.8)),
     }
   })
+}
+
+/** Dev-only stand-in for `GET /api/stocks/popular`. */
+export async function getMockPopularSymbols(signal?: AbortSignal): Promise<string[]> {
+  await wait(MOCK_LATENCY_MS, signal)
+  return [...MOCK_POPULAR_SYMBOLS]
 }

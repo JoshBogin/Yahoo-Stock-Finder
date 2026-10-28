@@ -1,4 +1,4 @@
-import { getMockDailySummary } from './mock'
+import { getMockDailySummary, getMockPopularSymbols } from './mock'
 import { ApiError, type ApiErrorKind, type DailySummary, type ProblemDetails } from './types'
 
 const USE_MOCKS = import.meta.env.VITE_USE_MOCKS === 'true'
@@ -29,20 +29,25 @@ async function toApiError(response: Response): Promise<ApiError> {
   return new ApiError(kind, problem.detail ?? FALLBACK_MESSAGES[kind], response.status, problem.traceId)
 }
 
-export async function fetchDailySummary(symbol: string, signal?: AbortSignal): Promise<DailySummary[]> {
-  if (USE_MOCKS) return getMockDailySummary(symbol, signal)
-
+async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
   let response: Response
   try {
-    response = await fetch(`/api/stocks/${encodeURIComponent(symbol)}/daily-summary`, {
-      headers: { Accept: 'application/json' },
-      signal,
-    })
+    response = await fetch(path, { headers: { Accept: 'application/json' }, signal })
   } catch (error) {
     if (signal?.aborted) throw error
     throw new ApiError('network', FALLBACK_MESSAGES.network)
   }
 
   if (!response.ok) throw await toApiError(response)
-  return (await response.json()) as DailySummary[]
+  return (await response.json()) as T
+}
+
+export async function fetchDailySummary(symbol: string, signal?: AbortSignal): Promise<DailySummary[]> {
+  if (USE_MOCKS) return getMockDailySummary(symbol, signal)
+  return getJson<DailySummary[]>(`/api/stocks/${encodeURIComponent(symbol)}/daily-summary`, signal)
+}
+
+export async function fetchPopularSymbols(signal?: AbortSignal): Promise<string[]> {
+  if (USE_MOCKS) return getMockPopularSymbols(signal)
+  return getJson<string[]>('/api/stocks/popular', signal)
 }

@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Options;
 using StockFinderAPI.Core;
 
 namespace StockFinderAPI.Api;
@@ -17,8 +18,15 @@ public static partial class StockEndpoints
             .ProducesProblem(StatusCodes.Status502BadGateway)
             .ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
+        group.MapGet("/popular", GetPopularSymbols)
+            .WithName("GetPopularSymbols")
+            .WithSummary("The curated list of popular symbols shown on the dashboard.");
+
         return app;
     }
+
+    private static Ok<IReadOnlyList<string>> GetPopularSymbols(IOptions<PopularStocksOptions> options) =>
+        TypedResults.Ok<IReadOnlyList<string>>(options.Value.Symbols);
 
     private static async Task<Results<Ok<IReadOnlyList<DailySummary>>, ProblemHttpResult>> GetDailySummary(
         string symbol, IMarketDataProvider marketData, CancellationToken cancellationToken)
