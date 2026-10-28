@@ -31,7 +31,7 @@ export function StockDetail({ symbol, onClose }: StockDetailProps) {
           <h2 id="detail-heading" ref={headingRef} tabIndex={-1}>
             {symbol}
           </h2>
-          <p className="section-heading__note">Daily summary of 15-minute trading, last month</p>
+          <p className="section-heading__note">Daily summary of trading, last month</p>
         </div>
         {latest && (
           <dl className="stock-detail__stats">

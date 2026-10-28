@@ -11,7 +11,7 @@ function App() {
       <header className="app-header">
         <div className="app-header__brand">
           <h1>StockFinder</h1>
-          <p>One month of intraday trends, summarized by day</p>
+          <p>One month of stock trends, summarized by day</p>
         </div>
         <SearchBox onSearch={setSymbol} />
       </header>
