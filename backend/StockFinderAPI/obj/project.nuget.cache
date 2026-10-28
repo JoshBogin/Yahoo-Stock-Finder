@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "G2HQ9BHugKU=",
+  "success": true,
+  "projectFilePath": "/Users/joshbogin/VSCodeProjects/StockFinder-Backend/StockFinderAPI/StockFinderAPI.csproj",
+  "expectedPackageFiles": [
+    "/Users/joshbogin/.nuget/packages/microsoft.aspnetcore.openapi/10.0.14/microsoft.aspnetcore.openapi.10.0.14.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.extensions.ambientmetadata.application/10.11.0/microsoft.extensions.ambientmetadata.application.10.11.0.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.extensions.compliance.abstractions/10.11.0/microsoft.extensions.compliance.abstractions.10.11.0.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.extensions.dependencyinjection.autoactivation/10.11.0/microsoft.extensions.dependencyinjection.autoactivation.10.11.0.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.extensions.diagnostics.exceptionsummarization/10.11.0/microsoft.extensions.diagnostics.exceptionsummarization.10.11.0.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.extensions.http.diagnostics/10.11.0/microsoft.extensions.http.diagnostics.10.11.0.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.extensions.http.resilience/10.11.0/microsoft.extensions.http.resilience.10.11.0.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.extensions.resilience/10.11.0/microsoft.extensions.resilience.10.11.0.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.extensions.telemetry/10.11.0/microsoft.extensions.telemetry.10.11.0.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.extensions.telemetry.abstractions/10.11.0/microsoft.extensions.telemetry.abstractions.10.11.0.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/microsoft.openapi/2.12.2/microsoft.openapi.2.12.2.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/polly.core/8.4.2/polly.core.8.4.2.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/polly.extensions/8.4.2/polly.extensions.8.4.2.nupkg.sha512",
+    "/Users/joshbogin/.nuget/packages/polly.ratelimiting/8.4.2/polly.ratelimiting.8.4.2.nupkg.sha512"
+  ],
+  "logs": []
+}
