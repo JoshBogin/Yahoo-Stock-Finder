@@ -4,20 +4,20 @@ import { Skeleton } from './Skeleton'
 import { StockCard } from './StockCard'
 
 /** How many placeholder cards to show while the symbol list loads. */
-const PLACEHOLDER_COUNT = 6
+const PLACEHOLDER_COUNT = 8
 
-interface DashboardProps {
+interface TrendingStocksProps {
   onSelect: (symbol: string) => void
 }
 
-export function Dashboard({ onSelect }: DashboardProps) {
+export function TrendingStocks({ onSelect }: TrendingStocksProps) {
   const { data: symbols, error, isPending, isError, refetch } = usePopularStocks()
 
   return (
-    <section className="dashboard" aria-labelledby="dashboard-heading">
+    <section className="stock-section" aria-labelledby="trending-heading">
       <div className="section-heading">
-        <h2 id="dashboard-heading">Popular stocks</h2>
-        <p className="section-heading__note">Last month, summarized by day</p>
+        <h2 id="trending-heading">Trending stocks</h2>
+        <p className="section-heading__note">Daily averages for the top stocks by trade volume</p>
       </div>
 
       {isError && <ErrorBanner error={error} onRetry={() => void refetch()} />}
@@ -25,7 +25,7 @@ export function Dashboard({ onSelect }: DashboardProps) {
       {isPending && (
         <>
           <output className="visually-hidden">Loading popular stocks</output>
-          <ul className="dashboard__grid" aria-busy="true">
+          <ul className="stock-section__grid" aria-busy="true">
             {Array.from({ length: PLACEHOLDER_COUNT }, (_, index) => (
               <li key={index}>
                 <article className="stock-card">
@@ -39,10 +39,10 @@ export function Dashboard({ onSelect }: DashboardProps) {
         </>
       )}
 
-      {symbols?.length === 0 && <p className="stock-card__empty">No popular stocks are configured.</p>}
+      {symbols?.length === 0 && <p className="stock-card__empty">No popular stocks are available.</p>}
 
       {symbols && symbols.length > 0 && (
-        <ul className="dashboard__grid">
+        <ul className="stock-section__grid">
           {symbols.map((symbol) => (
             <li key={symbol}>
               <StockCard symbol={symbol} onSelect={onSelect} />

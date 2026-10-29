@@ -1,7 +1,7 @@
 import { ApiError, type DailySummary } from './types'
 
 const MOCK_LATENCY_MS = 400
-const MOCK_POPULAR_SYMBOLS = ['NVDA', 'TSLA', 'AAPL', 'AMZN', 'MSFT', 'META']
+const MOCK_POPULAR_SYMBOLS = ['NVDA', 'TSLA', 'AAPL', 'AMZN', 'MSFT', 'META', 'GOOGL', 'AMD']
 const TRADING_DAYS = 21
 
 // Small deterministic PRNG so each symbol always renders the same mock series.

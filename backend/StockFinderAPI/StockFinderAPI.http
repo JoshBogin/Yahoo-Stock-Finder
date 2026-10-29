@@ -6,11 +6,17 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
 
 ###
 
+### Upstream Yahoo Finance most-active screener (called by YahooFinanceClient)
+GET https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved?scrIds=most_actives&count=8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+
+###
+
 ### Daily summary (B1)
 GET {{StockFinderAPI_HostAddress}}/api/stocks/TSLA/daily-summary
 Accept: application/json
 
-### Popular symbols (B4)
+### Popular symbols: top 8 most active by volume (B4)
 GET {{StockFinderAPI_HostAddress}}/api/stocks/popular
 Accept: application/json
 

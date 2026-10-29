@@ -120,7 +120,7 @@ public class DailySummaryCalculatorTests
     }
 
     [Fact]
-    public void Summarize_PreservesFullPrecisionPrices()
+    public void Summarize_RoundsYahooPricesToFourDecimalPlaces()
     {
         // Yahoo sends float-derived values like 369.4200134277344.
         var chart = Chart(NewYork, Bar("2026-09-28T14:00:00Z", high: 369.4200134277344m, low: 40.29575m, volume: 1));

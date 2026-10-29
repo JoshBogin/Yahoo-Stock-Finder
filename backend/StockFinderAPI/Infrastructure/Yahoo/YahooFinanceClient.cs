@@ -4,7 +4,7 @@ using StockFinderAPI.Core;
 
 namespace StockFinderAPI.Infrastructure.Yahoo;
 
-/// <summary>Typed HttpClient for Yahoo Finance's chart endpoint.</summary>
+/// <summary>Typed HttpClient for Yahoo Finance's chart and screener endpoints.</summary>
 public sealed class YahooFinanceClient(HttpClient httpClient, IOptions<YahooFinanceOptions> options) : IMarketDataProvider
 {
     private readonly YahooFinanceOptions _options = options.Value;
@@ -35,6 +35,25 @@ public sealed class YahooFinanceClient(HttpClient httpClient, IOptions<YahooFina
 
         var body = await response.Content.ReadFromJsonAsync<YahooChartResponse>(cancellationToken);
         return body?.Chart.Result is [var result, ..] ? result : null;
+    }
+
+    /// <summary>
+    /// Reads Yahoo's predefined "most_actives" screener, which lists stocks by today's volume, highest first, and
+    /// returns the first <paramref name="count"/> symbols in that order. Throws <see cref="HttpRequestException"/> on failures.
+    /// </summary>
+    public async Task<IReadOnlyList<string>> GetMostActiveSymbolsAsync(int count, CancellationToken cancellationToken = default)
+    {
+        var uri = $"v1/finance/screener/predefined/saved?scrIds=most_actives&count={count}";
+
+        using var response = await httpClient.GetAsync(uri, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var body = await response.Content.ReadFromJsonAsync<YahooScreenerResponse>(cancellationToken);
+        var quotes = body?.Finance?.Result is [var result, ..] ? result.Quotes ?? [] : [];
+
+        return [.. quotes
+            .Where(quote => !string.IsNullOrWhiteSpace(quote.Symbol))
+            .Select(quote => quote.Symbol!)];
     }
 
     private static IntradayChart ToIntradayChart(YahooChartResult result)

@@ -1,6 +1,7 @@
-import { Dashboard } from './components/Dashboard'
+import { MarketIndexes } from './components/MarketIndexes'
 import { SearchBox } from './components/SearchBox'
 import { StockDetail } from './components/StockDetail'
+import { TrendingStocks } from './components/TrendingStocks'
 import { useSelectedSymbol } from './hooks/useSelectedSymbol'
 
 function App() {
@@ -11,14 +12,15 @@ function App() {
       <header className="app-header">
         <div className="app-header__brand">
           <h1>StockFinder</h1>
-          <p>One month of stock trends, summarized by day</p>
+          <p>One month of stock trends</p>
         </div>
         <SearchBox onSearch={setSymbol} />
       </header>
 
       <main className="app-main">
         {symbol && <StockDetail key={symbol} symbol={symbol} onClose={() => setSymbol(null)} />}
-        <Dashboard onSelect={setSymbol} />
+        <MarketIndexes onSelect={setSymbol} />
+        <TrendingStocks onSelect={setSymbol} />
       </main>
     </div>
   )

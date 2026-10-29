@@ -9,16 +9,18 @@
   --text-primary: #0b0b0b;
   --text-secondary: #52514e;
   --text-muted: #6e6d68;
-  --accent: #2a78d6;
+  /* Main app accent color in light mode */
+  --accent: #148290;
   --accent-ink: #ffffff;
-  --focus: #2a78d6;
+  --button-hover: brightness(0.92);
+  --focus: var(--accent);
 
-  /* Chart series: categorical slots 1 and 2, plus a lighter step of slot 1 for the volume bars. */
-  --series-high: #2a78d6;
+  /* Chart series */
+  --series-high: var(--accent);
   --series-low: #eb6834;
   --series-volume: #86b6ef;
 
-  --good: #006300;
+  --good: #188018;
   --critical: #c22d2d;
   --critical-bg: #fbeceb;
   --critical-border: #efc3c1;
@@ -51,9 +53,12 @@
     --text-primary: #f0efec;
     --text-secondary: #c3c2b7;
     --text-muted: #9a998f;
-    --accent: #3987e5;
-    --focus: #6da7ec;
-    --series-high: #3987e5;
+    /* Main app accent color in dark mode */
+    --accent: #42bdc8;
+    --accent-ink: #071b1d;
+    --button-hover: brightness(1.08);
+    --focus: var(--accent);
+    --series-high: var(--accent);
     --series-low: #d95926;
     --series-volume: #1c5cab;
     --good: #4cc44c;
@@ -76,9 +81,11 @@
   --text-primary: #f0efec;
   --text-secondary: #c3c2b7;
   --text-muted: #9a998f;
-  --accent: #3987e5;
-  --focus: #6da7ec;
-  --series-high: #3987e5;
+  --accent: #42bdc8;
+  --accent-ink: #071b1d;
+  --button-hover: brightness(1.08);
+  --focus: var(--accent);
+  --series-high: var(--accent);
   --series-low: #d95926;
   --series-volume: #1c5cab;
   --good: #4cc44c;
@@ -157,6 +164,7 @@ input {
   font-size: 1.75rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
+  color: var(--accent);
 }
 
 .app-header__brand p,
@@ -195,7 +203,7 @@ h2 {
 }
 
 .button:hover {
-  filter: brightness(1.08);
+  filter: var(--button-hover);
 }
 
 .button--secondary {
@@ -263,8 +271,8 @@ h2 {
   font-size: 0.875rem;
 }
 
-/* ---------- Dashboard ---------- */
-.dashboard__grid {
+/* ---------- Stock sections ---------- */
+.stock-section__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
   gap: var(--space-4);
@@ -296,9 +304,34 @@ h2 {
   outline-offset: 2px;
 }
 
+.stock-card__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-2);
+}
+
 .stock-card__symbol {
   font-family: var(--mono);
   font-size: 1.125rem;
+}
+
+.stock-card__name {
+  font-size: 1.125rem;
+}
+
+/* The symbol under an index's display name, e.g. ^GSPC for the S&P 500. */
+.stock-card__ticker,
+.stock-detail__ticker {
+  color: var(--text-secondary);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.stock-detail__ticker {
+  margin-inline-start: var(--space-2);
 }
 
 .stock-card__select {
@@ -352,8 +385,22 @@ h2 {
   font-variant-numeric: tabular-nums;
 }
 
+.stock-card__date {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sits above the card-wide button so the sparkline gets hover; a click still opens the detail. */
 .stock-card__spark {
+  position: relative;
+  z-index: 1;
   block-size: 3.5rem;
+  cursor: pointer;
+}
+
+.stock-card__spark-chart {
+  block-size: 100%;
 }
 
 .stock-card__empty {
@@ -400,6 +447,11 @@ h2 {
   font-size: 1.75rem;
 }
 
+/* An index's display name reads as words, not a ticker. */
+.stock-detail__header h2.stock-detail__name {
+  font-family: inherit;
+}
+
 .stock-detail__header h2:focus {
   outline: none;
 }
@@ -421,9 +473,36 @@ h2 {
 .stock-detail__close {
   grid-column: 2;
   grid-row: 1;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  min-block-size: 2.75rem;
+  padding: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  position: relative;
 }
 
-/* Wide panel: stats move up beside the title, chart and table sit side by side. */
+.stock-detail__close::before,
+.stock-detail__close::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: 1rem;
+  block-size: 2px;
+  background: currentColor;
+}
+
+.stock-detail__close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.stock-detail__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Wide panel: stats move up beside the title. */
 @container detail (min-width: 52rem) {
   .stock-detail__header {
     grid-template-columns: 1fr auto auto;
@@ -438,20 +517,6 @@ h2 {
   .stock-detail__close {
     grid-column: 3;
   }
-
-  .stock-detail__body {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-  }
-
-  .table-scroll {
-    max-block-size: 26rem;
-  }
-}
-
-.stock-detail__body {
-  display: grid;
-  gap: var(--space-5);
 }
 
 /* ---------- Chart ---------- */
@@ -465,6 +530,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
+  margin-block-end: var(--space-2);
   color: var(--text-secondary);
   font-size: 0.8125rem;
 }
@@ -513,8 +579,14 @@ h2 {
   font-variant-numeric: tabular-nums;
 }
 
-.stock-chart .chart-cursor {
-  stroke: var(--text-muted);
+/* Remove focus ring to preserve from Recharts' elements. */
+.recharts-wrapper :focus {
+  outline: none;
+}
+
+.stock-chart .chart-cursor,
+.stock-card .chart-cursor {
+  stroke: var(--accent);
   fill: var(--surface-sunken);
 }
 
@@ -544,52 +616,6 @@ h2 {
 
 .chart-tooltip dd {
   font-variant-numeric: tabular-nums;
-}
-
-/* ---------- Table ---------- */
-.table-scroll {
-  overflow: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-}
-
-.daily-table {
-  inline-size: 100%;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.daily-table th,
-.daily-table td {
-  padding-block: var(--space-2);
-  padding-inline: var(--space-3);
-  border-block-end: 1px solid var(--border);
-  text-align: end;
-  white-space: nowrap;
-}
-
-.daily-table th:first-child {
-  text-align: start;
-}
-
-.daily-table thead th {
-  position: sticky;
-  inset-block-start: 0;
-  background: var(--surface-sunken);
-  color: var(--text-secondary);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.daily-table tbody th {
-  font-weight: 500;
-}
-
-.daily-table tbody tr:last-child > * {
-  border-block-end: 0;
 }
 
 /* ---------- States ---------- */
@@ -637,7 +663,8 @@ h2 {
 .skeleton {
   display: block;
   border-radius: var(--radius-sm);
-  background: linear-gradient(90deg, var(--skeleton) 25%, var(--skeleton-shine) 50%, var(--skeleton) 75%) 0 0 / 200% 100%;
+  background: linear-gradient(90deg, var(--skeleton) 25%, var(--skeleton-shine) 50%, var(--skeleton) 75%) 0
+    0 / 200% 100%;
   animation: skeleton-shimmer 1.4s ease-in-out infinite;
 }
 
@@ -652,10 +679,6 @@ h2 {
 
 .skeleton--chart {
   block-size: 24rem;
-}
-
-.skeleton--table {
-  block-size: 12rem;
 }
 
 @keyframes skeleton-shimmer {

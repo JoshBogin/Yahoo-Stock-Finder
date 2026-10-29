@@ -2,8 +2,6 @@ using StockFinderAPI.Api;
 using StockFinderAPI.Infrastructure.Yahoo;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddCors(options =>
@@ -19,10 +17,14 @@ builder.Services.AddExceptionHandler<UpstreamExceptionHandler>();
 
 builder.Services.AddYahooFinanceClient();
 
+// Register popular stocks options with the dependency injection container
 builder.Services.AddOptions<PopularStocksOptions>()
     .BindConfiguration(PopularStocksOptions.SectionName)
     .ValidateDataAnnotations()
     .ValidateOnStart();
+builder.Services.AddMemoryCache();
+//
+builder.Services.AddScoped<PopularSymbolsService>();
 
 var app = builder.Build();
 

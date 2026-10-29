@@ -12,7 +12,7 @@ public static class DailySummaryCalculator
     {
         var timeZone = TimeZoneInfo.FindSystemTimeZoneById(chart.ExchangeTimeZoneId);
 
-        return chart.Candles
+        return [.. chart.Candles
             .Where(c => c is { High: not null, Low: not null, Volume: not null })
             .GroupBy(c => DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(c.Timestamp, timeZone).DateTime))
             .OrderBy(g => g.Key)
@@ -20,8 +20,7 @@ public static class DailySummaryCalculator
                 g.Key,
                 Round(g.Average(c => c.Low!.Value)),
                 Round(g.Average(c => c.High!.Value)),
-                g.Sum(c => c.Volume!.Value)))
-            .ToList();
+                g.Sum(c => c.Volume!.Value)))];
     }
 
     private static decimal Round(decimal value) =>

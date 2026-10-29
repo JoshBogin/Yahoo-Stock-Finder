@@ -9,3 +9,7 @@ obj/
 # Node (frontend) - frontend/.gitignore covers the rest
 node_modules/
 dist/
+
+# Test coverage output
+coverage/
+TestResults/

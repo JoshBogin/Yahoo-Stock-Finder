@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "frontend-mock",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd frontend && VITE_USE_MOCKS=true npx vite --port 5174 --strictPort"
+      ],
+      "port": 5174
+    },
+    {
+      "name": "frontend",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd frontend && npx vite --port 5175 --strictPort"
+      ],
+      "port": 5175
+    }
+  ]
+}

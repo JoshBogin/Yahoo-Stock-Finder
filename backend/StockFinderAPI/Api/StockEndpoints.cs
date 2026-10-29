@@ -1,6 +1,5 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Extensions.Options;
 using StockFinderAPI.Core;
 
 namespace StockFinderAPI.Api;
@@ -20,13 +19,14 @@ public static partial class StockEndpoints
 
         group.MapGet("/popular", GetPopularSymbols)
             .WithName("GetPopularSymbols")
-            .WithSummary("The curated list of popular symbols shown on the dashboard.");
+            .WithSummary("Today's most actively traded stocks by volume, or the configured fallback list if Yahoo is unavailable.");
 
         return app;
     }
 
-    private static Ok<IReadOnlyList<string>> GetPopularSymbols(IOptions<PopularStocksOptions> options) =>
-        TypedResults.Ok<IReadOnlyList<string>>(options.Value.Symbols);
+    private static async Task<Ok<IReadOnlyList<string>>> GetPopularSymbols(
+        PopularSymbolsService popular, CancellationToken cancellationToken) =>
+        TypedResults.Ok(await popular.GetAsync(cancellationToken));
 
     private static async Task<Results<Ok<IReadOnlyList<DailySummary>>, ProblemHttpResult>> GetDailySummary(
         string symbol, IMarketDataProvider marketData, CancellationToken cancellationToken)
@@ -48,7 +48,7 @@ public static partial class StockEndpoints
             return TypedResults.Problem(
                 statusCode: StatusCodes.Status404NotFound,
                 title: "Symbol not found",
-                detail: $"No intraday data was found for '{normalized}'.");
+                detail: $"No data was found for '{normalized}'. Try another stock symbol.");
         }
 
         return TypedResults.Ok(summaries);
